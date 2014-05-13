@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
@@ -14,10 +13,12 @@ import java.util.Queue;
 public class AdjacencyListGraph<E> implements Graph<E> {
 
     ArrayList<LinkedList<E>> nodes;
-    ArrayList<AStarNode> aStarNodes;
+    ArrayList<AStarNode<E>> aStarNodes;
+    ArrayList<Edge<E>> edges;
 
     public AdjacencyListGraph() {
         nodes = new ArrayList<LinkedList<E>>();
+        aStarNodes = new ArrayList<AStarNode<E>>();
     }
 
     @Override
@@ -33,7 +34,9 @@ public class AdjacencyListGraph<E> implements Graph<E> {
     public void addNode(E node, int heuristic) {
         LinkedList<E> listNode = new LinkedList<E>();
         listNode.add(node);
+        AStarNode<E> aNode = new AStarNode<E>(node, heuristic);
         nodes.add(listNode);
+        aStarNodes.add(aNode);
     }
 
     @Override
@@ -47,9 +50,27 @@ public class AdjacencyListGraph<E> implements Graph<E> {
         for (int i = 0; i < nodes.size(); i++) {
             if (nodes.get(i).get(0).equals(from)) {
                 nodes.get(i).add(to);
+                createEdgeObject(from, to, weight);
             }
         }
 
+    }
+
+    /**
+     * Method to create an edge object
+     * @param from, the first node
+     * @param to, the second node
+     * @param weight, the weight of the connection
+     */
+    private void createEdgeObject(E from, E to, int weight) {
+        //Making sure that the edge is not already in the list
+        for (Edge<E> e : edges) {
+            if ((e.getNode1().equals(from) && e.getNode2().equals(to))
+                    || (e.getNode1().equals(to) && e.getNode2().equals(from)))
+                return;
+        }
+        Edge<E> e = new Edge<E>(from, to, weight);
+        edges.add(e);
     }
 
     @Override
