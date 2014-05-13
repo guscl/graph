@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 public class Main {
@@ -64,9 +65,10 @@ public class Main {
                         }
                     });
             //ArrayList<String> path2 = graph.aStar("Timisoara", "Bucharest");
+            // System.out.println(path2.toString());
             
             System.out.println(path.toString());
-           // System.out.println(path2.toString());
+           
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

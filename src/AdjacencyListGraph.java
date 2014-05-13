@@ -14,6 +14,7 @@ import java.util.Queue;
 public class AdjacencyListGraph<E> implements Graph<E> {
 
     ArrayList<LinkedList<E>> nodes;
+    ArrayList<AStarNode> aStarNodes;
 
     public AdjacencyListGraph() {
         nodes = new ArrayList<LinkedList<E>>();
