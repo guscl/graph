@@ -58,12 +58,16 @@ public class AdjacencyListGraph<E> implements Graph<E> {
 
     /**
      * Method to create an edge object
-     * @param from, the first node
-     * @param to, the second node
-     * @param weight, the weight of the connection
+     * 
+     * @param from
+     *            , the first node
+     * @param to
+     *            , the second node
+     * @param weight
+     *            , the weight of the connection
      */
     private void createEdgeObject(E from, E to, int weight) {
-        //Making sure that the edge is not already in the list
+        // Making sure that the edge is not already in the list
         for (Edge<E> e : edges) {
             if ((e.getNode1().equals(from) && e.getNode2().equals(to))
                     || (e.getNode1().equals(to) && e.getNode2().equals(from)))
@@ -290,7 +294,42 @@ public class AdjacencyListGraph<E> implements Graph<E> {
 
     @Override
     public ArrayList<E> aStar(E start, E end) throws Exception {
-        // TODO Auto-generated method stub
+        if (!isNode(start)) {
+            throw new Exception("Start is not in the graph");
+        }
+        if (!isNode(end)) {
+            throw new Exception("End is not in the graph");
+        }
+
+        // Parent List
+        ArrayList<LinkedList<E>> parentList = parentList();
+        // Neighbours
+        ArrayList<E> neighbours;
+        // Queue for the bfs
+        Queue<E> fifo = new LinkedList<E>();
+        fifo.add(start);
+
+        while (!fifo.isEmpty()) {
+            E node = fifo.poll();
+            neighbours = getNeighbours(node);
+            // Taking out the visited elements and setting the parent
+            for (E e : neighbours) {
+                for (int i = 0; i < parentList.size(); i++) {
+                    if (e.equals(parentList.get(i).get(0))) {
+                        if (parentList.get(i).get(1) == null) {
+                            parentList.get(i).set(1, node);
+                            // Checking if the element is the end point
+                            if (e.equals(end))
+                                return getPath(parentList, start, end);
+                            // Adding the element to the list
+                            fifo.add(e);
+                        }
+                    }
+                }
+            }
+
+        }
+
         return null;
     }
 
